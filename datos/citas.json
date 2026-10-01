@@ -1,0 +1,72 @@
+[
+    {
+        "id": "CITA-0001",
+        "id_paciente": "PAC-0001",
+        "id_medico": "MED-0002",
+        "nombre_medico": "Dr. Luis Mamani",
+        "especialidad": "Cardiología",
+        "turno": "Mañana",
+        "fecha": "2026-09-22",
+        "estado": "Reprogramada"
+    },
+    {
+        "id_cita": "CITA-0002",
+        "id_paciente": "PAC-0006",
+        "nombre_paciente": "Raul",
+        "ci": "12345678",
+        "consulta": "dolor de pecho",
+        "id_medico": "MED-0002",
+        "nombre_medico": "Dr. Luis Mamani",
+        "especialidad": "Cardiología",
+        "especialidades_sugeridas": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho"
+        ],
+        "fecha": "2026-09-30",
+        "hora": "12:00",
+        "prioridad": 2,
+        "estado": "Cancelada"
+    },
+    {
+        "id_cita": "CITA-0003",
+        "id_paciente": "PAC-0006",
+        "nombre_paciente": "Raul",
+        "ci": "12345678",
+        "consulta": "dolor de pecho",
+        "id_medico": "MED-0002",
+        "nombre_medico": "Dr. Luis Mamani",
+        "especialidad": "Cardiología",
+        "especialidades_sugeridas": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho"
+        ],
+        "fecha": "2026-09-30",
+        "hora": "01:00",
+        "prioridad": 3,
+        "estado": "Cancelada"
+    },
+    {
+        "id_cita": "CITA-0004",
+        "id_paciente": "PAC-0007",
+        "nombre_paciente": "Raul",
+        "ci": "00000111",
+        "consulta": "ddtrdtrdtrdtg",
+        "id_medico": "MED-0002",
+        "nombre_medico": "Dr. Luis Mamani",
+        "especialidad": "Cardiología",
+        "especialidades_sugeridas": [],
+        "palabras_clave": [
+            "ddtrdtrdtrdtg"
+        ],
+        "fecha": "2026-10-08",
+        "hora": "12:00",
+        "prioridad": 1,
+        "estado": "Programada"
+    }
+]

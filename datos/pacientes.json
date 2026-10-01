@@ -1,0 +1,100 @@
+[
+    {
+        "id_paciente": "PAC-0001",
+        "nombre": "María Quispe",
+        "ci": "1234567",
+        "consulta": "Tengo dolor de pecho y presión en el corazón.",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho",
+            "presion",
+            "corazon"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0002",
+        "nombre": "María Quispe",
+        "ci": "1234567",
+        "consulta": "Tengo dolor de pecho y presión en el corazón.",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho",
+            "presion",
+            "corazon"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0003",
+        "nombre": "María Quispe",
+        "ci": "1234567",
+        "consulta": "Tengo dolor de pecho y presión en el corazón.",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho",
+            "presion",
+            "corazon"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0004",
+        "nombre": "María Quispe",
+        "ci": "1234567",
+        "consulta": "Tengo dolor de pecho y presión en el corazón.",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho",
+            "presion",
+            "corazon"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0005",
+        "nombre": "María Quispe",
+        "ci": "1234567",
+        "consulta": "Tengo dolor de pecho y presión en el corazón.",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho",
+            "presion",
+            "corazon"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0006",
+        "nombre": "Raul",
+        "ci": "12345678",
+        "consulta": "dolor de pecho",
+        "especialidades": [
+            "Cardiología"
+        ],
+        "palabras_clave": [
+            "dolor",
+            "pecho"
+        ]
+    },
+    {
+        "id_paciente": "PAC-0007",
+        "nombre": "Raul",
+        "ci": "00000111",
+        "consulta": "ddtrdtrdtrdtg",
+        "especialidades": [],
+        "palabras_clave": [
+            "ddtrdtrdtrdtg"
+        ]
+    }
+]

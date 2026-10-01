@@ -1,0 +1,16 @@
+[
+    {
+        "id": "MED-0001",
+        "nombre": "Dra. Ana Pérez",
+        "especialidad": "Cardiología",
+        "turno": "Mañana",
+        "estado": "inactivo"
+    },
+    {
+        "id": "MED-0002",
+        "nombre": "Dr. Luis Mamani",
+        "especialidad": "Cardiología",
+        "turno": "Mañana",
+        "estado": "activo"
+    }
+]

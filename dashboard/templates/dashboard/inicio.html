@@ -1,0 +1,200 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda Médica | Salud Bolivia</title><link rel="stylesheet" href="{% static 'dashboard/estilos.css' %}">
+</head>
+<body>
+  <header class="encabezado">
+    <div>
+      <p class="marca">SALUD BOLIVIA · AGENDA</p>
+      <h1>Citas médicas, claras y organizadas</h1>
+      <p>Agenda, pacientes y disponibilidad en un solo lugar.</p>
+    </div>
+    <div class="contador">
+      <strong>{{ cantidad_citas }}</strong>
+      <span>citas registradas</span>
+    </div>
+  </header>
+  <main class="contenedor">
+    {% if messages %}{% for message in messages %}
+    <p class="mensaje {{ message.tags }}">{{ message }}</p>{% endfor %}{% endif %}
+    <section class="cuadricula superior">
+      <article class="tarjeta prioridad">
+        <p class="etiqueta">PRÓXIMA ATENCIÓN</p>{% if siguiente %}
+        <div class="proxima">
+          <div>
+            <h2>{{ siguiente.nombre_paciente}}</h2>
+            <p>{{ siguiente.fecha }} · {{ siguiente.hora }} · {{ siguiente.nombre_medico }}</p>
+            <p>{{ siguiente.consulta }}</p>
+          </div>
+          <span class="insignia p{{ siguiente.prioridad|default:3 }}">Prioridad {{ siguiente.prioridad|default:3 }}</span>
+        </div>
+        {% else %}
+        <h2>Agenda lista</h2>
+        <p>Las próximas citas aparecerán aquí.</p>{% endif %}
+      </article>
+      <article class="tarjeta resumen">
+        <p class="etiqueta">PACIENTES</p>
+        <strong>{{ cantidad_pacientes }}</strong>
+        <span>registrados</span>
+        <p class="detalle">Los datos se guardan localmente en archivos JSON.</p>
+      </article>
+    </section>
+    <section class="cuadricula contenido">
+      <article class="tarjeta formulario">
+        <p class="etiqueta">RESERVAR</p>
+        <h2>Nueva cita</h2>
+        <form method="post">{% csrf_token %}
+          <label>
+            Nombre completo
+            <input name="nombre" value="{{ borrador_cita.nombre }}" required maxlength="100" placeholder="Ej. María Quispe">
+          </label>
+          <label>
+            Carnet de identidad
+            <input name="ci" value="{{ borrador_cita.ci }}" required maxlength="20" placeholder="Ej. 1234567">
+          </label>
+          <label for="consulta">
+            Motivo de consulta
+          </label>
+          <textarea id="consulta" name="consulta" required maxlength="500" placeholder="Describe brevemente el motivo">{{ consulta_dictada }}</textarea>
+          <button class="microfono boton-voz" type="submit" name="accion" value="dictar_consulta" formnovalidate>
+            🎙️ Dictar motivo desde el micrófono
+          </button>
+          <label>Médico
+            <select name="medico" required>
+              <option value="">Selecciona un médico</option>
+              {% for medico in medicos %}
+              <option value="{{ medico.id }}"
+                {% if borrador_cita.medico == medico.id %}selected{% endif %}>
+                {{ medico.nombre }} · {{ medico.especialidad }} ({{ medico.turno }})
+              </option>
+              {% empty %}
+              <option disabled>No hay médicos activos</option>
+              {% endfor %}
+            </select>
+          </label>
+          <div class="dos-columnas">
+            <label>
+              Fecha
+              <input type="date" name="fecha" value="{{ borrador_cita.fecha }}" min="{{ hoy }}" required>
+            </label>
+            <label>
+              Hora
+              <input type="time" name="hora" value="{{ borrador_cita.hora }}" step="1800" required>
+            </label>
+          </div>
+          <label>
+            Prioridad de atención
+            <select name="prioridad">
+              <option value="1" {% if borrador_cita.prioridad == '1' %}selected{% endif %}>
+                1 — Urgente
+              </option>
+              <option value="2" {% if borrador_cita.prioridad == '2' %}selected{% endif %}>
+                2 — Preferente
+              </option>
+              <option value="3" {% if borrador_cita.prioridad != '1' and borrador_cita.prioridad != '2' %}selected{% endif %}>
+                3 — Normal
+              </option>
+            </select>
+          </label>
+          <button type="submit" name="accion" value="reservar">
+            Confirmar cita
+          </button>
+        </form>
+        <p class="ayuda">
+          La prioridad solo organiza la fila de atención; no reemplaza una evaluación médica.
+        </p>
+      </article>
+      <article class="tarjeta lista">
+        <div class="fila-titulo">
+          <div>
+            <p class="etiqueta">AGENDA</p>
+            <h2>Citas médicas</h2>
+          </div>
+          <span class="contador-lista">{{ cantidad_citas }} total</span>
+        </div>
+        <form class="busqueda" method="get">
+          <input name="q" value="{{ q }}" placeholder="Buscar por paciente">
+          <button type="submit">Buscar</button>
+          {% if q %}
+          <a href="{% url 'inicio' %}">Limpiar</a>
+          {% endif %}
+        </form>
+        <form method="post" class="buscar-voz">
+          {% csrf_token %}
+          <button class="microfono" type="submit" name="accion" value="buscar_voz">
+            🎙️ Buscar hablando al micrófono
+          </button>
+        </form>
+        {% if tiempo_busqueda is not None %}
+        <p class="detalle">
+          Búsqueda en {{ tiempo_busqueda|floatformat:3 }} ms
+        </p>
+        {% endif %}
+        <div class="tabla">
+          {% for cita in citas %}
+          <div class="fila cita">
+            <div class="persona">
+              <strong>{{ cita.nombre_paciente|default:'Paciente' }}</strong>
+              <small>{{ cita.id_cita }} · CI {{ cita.ci }}</small>
+              <small>{{ cita.consulta }}</small>
+            </div>
+            <div class="datos-cita">
+              <strong>{{ cita.fecha }} · {{ cita.hora }}</strong>
+              <small>{{ cita.nombre_medico }} · {{ cita.especialidad }}</small>
+              <span class="estado {{ cita.estado|slugify }}">{{ cita.estado }}</span>
+            </div>
+            {% if cita.estado != 'Cancelada' and cita.estado != 'Atendida' %}
+            <form method="post" class="accion-cita">
+              {% csrf_token %}
+              <input type="hidden" name="accion" value="cancelar">
+              <input type="hidden" name="cita_id" value="{{ cita.id_cita }}">
+              <button class="boton-texto" type="submit">
+                Cancelar
+              </button>
+            </form>
+            {% endif %}
+          </div>{% empty %}
+          <p class="vacio">No hay citas para mostrar.</p>
+          {% endfor %}
+        </div>
+        <div class="acciones-agenda">
+          <form method="post" class="reubicar">
+            {% csrf_token %}
+            <input type="hidden" name="accion" value="reubicar">
+            <button class="secundario" type="submit">
+              Intentar reubicar citas pendientes
+            </button>
+          </form>
+          <a class="exportar" href="{% url 'exportar_citas_xml' %}">
+            Descargar agenda XML
+          </a>
+        </div>
+      </article>
+    </section>
+    <section class="cuadricula inferior">
+      <article class="tarjeta">
+        <p class="etiqueta">MÉDICOS DISPONIBLES</p>
+        {% for medico in medicos %}
+        <p class="medico">
+          <strong>{{ medico.nombre }}</strong>
+          <span>{{ medico.especialidad }} · Turno {{ medico.turno }}</span>
+        </p>
+        {% empty %}
+        <p class="vacio">No hay médicos activos registrados.</p>
+        {% endfor %}
+      </article>
+      <article class="tarjeta">
+        <p class="etiqueta">NOTIFICACIONES</p>
+        {% for nota in notificaciones %}
+        <p class="notificacion">{{ nota.mensaje|default:nota }}</p>
+        {% empty %}
+        <p class="vacio">Aún no hay notificaciones.</p>
+        {% endfor %}
+      </article>
+    </section>
+  </main>
+</body>
+</html>
